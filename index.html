@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>মাসিক আয়, ব্যয় ও জমা ব্যবস্থাপনা</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+</head>
+<body>
+    <div class="container">
+        <!-- নেভিগেশন বার -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <i class="fas fa-wallet"></i> অর্থ ব্যবস্থাপনা
+                </div>
+                <ul class="nav-menu">
+                    <li class="nav-item"><a href="#" class="nav-link active" data-tab="dashboard"><i class="fas fa-home icon"></i> ড্যাশবোর্ড</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link" data-tab="monthly-report"><i class="fas fa-chart-pie icon"></i> মাসিক রিপোর্ট</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link" data-tab="savings"><i class="fas fa-piggy-bank icon"></i> জমার হিসাব</a></li>
+                </ul>
+            </div>
+        </nav>
+        
+        <!-- মাস নির্বাচক -->
+        <div class="month-selector">
+            <div class="month-nav">
+                <button class="nav-btn" id="prev-month"><i class="fas fa-chevron-left"></i></button>
+                <div class="month-name" id="current-month"></div>
+                <button class="nav-btn" id="next-month"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <button id="add-transaction-btn"><i class="fas fa-plus icon"></i> নতুন লেনদেন যোগ করুন</button>
+        </div>
+        
+        <!-- ড্যাশবোর্ড ট্যাব -->
+        <div id="dashboard" class="tab-content active">
+            <!-- সামারি কার্ড -->
+            <div class="summary-cards">
+                <div class="summary-card income">
+                    <h3><i class="fas fa-money-bill-wave icon"></i> মোট আয়</h3>
+                    <div class="amount" id="total-income">৳ ০</div>
+                </div>
+                <div class="summary-card expense">
+                    <h3><i class="fas fa-shopping-cart icon"></i> মোট ব্যয়</h3>
+                    <div class="amount" id="total-expense">৳ ০</div>
+                </div>
+                <div class="summary-card savings">
+                    <h3><i class="fas fa-piggy-bank icon"></i> মোট জমা</h3>
+                    <div class="amount" id="total-savings">৳ ০</div>
+                </div>
+                <div class="summary-card remaining">
+                    <h3><i class="fas fa-wallet icon"></i> অবশিষ্ট অর্থ</h3>
+                    <div class="amount" id="remaining-amount">৳ ০</div>
+                </div>
+            </div>
+            
+            <!-- আয় ও ব্যয় ফর্ম -->
+            <div class="card">
+                <h2><i class="fas fa-plus-circle icon"></i> নতুন লেনদেন যোগ করুন</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="transaction-type">লেনদেনের ধরন</label>
+                        <select id="transaction-type">
+                            <option value="income">আয়</option>
+                            <option value="expense">ব্যয়</option>
+                            <option value="savings">জমা</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="title-field">
+                        <label for="transaction-title">শিরোনাম</label>
+                        <input type="text" id="transaction-title" placeholder="লেনদেনের শিরোনাম">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="transaction-amount">টাকার পরিমাণ</label>
+                        <input type="number" id="transaction-amount" placeholder="৳">
+                    </div>
+                    <div class="form-group">
+                        <label for="transaction-category">ক্যাটাগরি</label>
+                        <select id="transaction-category">
+                            <!-- ক্যাটাগরি অপশনগুলি JavaScript দ্বারা যোগ করা হবে -->
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="transaction-date">তারিখ</label>
+                    <input type="date" id="transaction-date">
+                </div>
+                <button id="add-transaction"><i class="fas fa-check icon"></i> যোগ করুন</button>
+            </div>
+            
+            <!-- আয় ও ব্যয়ের তালিকা -->
+            <div class="card">
+                <h2><i class="fas fa-list icon"></i> সাম্প্রতিক লেনদেন</h2>
+                <div class="table-container">
+                    <table id="transactions-table">
+                        <thead>
+                            <tr>
+                                <th>তারিখ</th>
+                                <th>ধরন</th>
+                                <th>বিবরণ</th>
+                                <th>পরিমাণ</th>
+                                <th>কার্যক্রম</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- লেনদেনগুলি JavaScript দ্বারা যোগ করা হবে -->
+                        </tbody>
+                    </table>
+                    <div id="no-transactions" class="empty-data">
+                        <i class="fas fa-receipt" style="font-size: 48px; margin-bottom: 15px;"></i>
+                        <p>কোনো লেনদেন যোগ করা হয়নি</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- মাসিক রিপোর্ট ট্যাব -->
+        <div id="monthly-report" class="tab-content">
+            <div class="card">
+                <h2><i class="fas fa-chart-pie icon"></i> ব্যয়ের বিশ্লেষণ</h2>
+                <div id="expense-analysis">
+                    <div class="empty-data">
+                        <i class="fas fa-chart-pie" style="font-size: 48px; margin-bottom: 15px;"></i>
+                        <p>ব্যয়ের ডেটা বিশ্লেষণের জন্য পর্যাপ্ত তথ্য নেই</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-history icon"></i> গত মাসের তুলনা</h2>
+                <div id="month-comparison">
+                    <div class="empty-data">
+                        <i class="fas fa-chart-bar" style="font-size: 48px; margin-bottom: 15px;"></i>
+                        <p>তুলনা করার জন্য পর্যাপ্ত ডেটা নেই</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- জমার হিসাব ট্যাব -->
+        <div id="savings" class="tab-content">
+            <div class="card">
+                <h2><i class="fas fa-piggy-bank icon"></i> জমার বিবরণ</h2>
+                <div class="savings-goal">
+                    <h3><i class="fas fa-bullseye icon"></i> জমার লক্ষ্য</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="savings-target">লক্ষ্যমাত্রা (৳)</label>
+                            <input type="number" id="savings-target" placeholder="লক্ষ্যমাত্রা">
+                        </div>
+                        <div class="form-group">
+                            <label for="target-date">লক্ষ্য তারিখ</label>
+                            <input type="date" id="target-date">
+                        </div>
+                    </div>
+                    <button id="set-goal"><i class="fas fa-target icon"></i> লক্ষ্য নির্ধারণ করুন</button>
+                </div>
+                
+                <div class="table-container" style="margin-top: 20px;">
+                    <table id="savings-table">
+                        <thead>
+                            <tr>
+                                <th>মাস</th>
+                                <th>জমার পরিমাণ</th>
+                                <th>লক্ষ্যমাত্রা</th>
+                                <th>অবস্থা</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- জমার ডেটা JavaScript দ্বারা যোগ করা হবে -->
+                        </tbody>
+                    </table>
+                    <div id="no-savings" class="empty-data">
+                        <i class="fas fa-piggy-bank" style="font-size: 48px; margin-bottom: 15px;"></i>
+                        <p>কোনো জমার তথ্য পাওয়া যায়নি</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-chart-line icon"></i> জমার প্রবণতা</h2>
+                <div id="savings-trend">
+                    <div class="empty-data">
+                        <i class="fas fa-chart-line" style="font-size: 48px; margin-bottom: 15px;"></i>
+                        <p>জমার প্রবণতা দেখানোর জন্য পর্যাপ্ত ডেটা নেই</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="app.js"></script>
+</body>
+</html>
