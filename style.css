@@ -1,5 +1,4 @@
-
-        * {
+   * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
@@ -360,4 +359,27 @@
         .category-selector {
             display: none;
         }
-  
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 5px;
+            color: white;
+            background: #2ecc71;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+        }
+        
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .notification.error {
+            background: #e74c3c;
+        }

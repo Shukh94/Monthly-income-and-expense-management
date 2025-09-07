@@ -1,4 +1,4 @@
-        // ডেটা মডেল
+ // ডেটা মডেল
         let transactions = [];
         let savingsGoal = { target: null, date: null };
         let currentMonthIndex = new Date().getMonth();
@@ -58,6 +58,9 @@
                     const tabId = this.getAttribute('data-tab');
                     document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
                     document.getElementById(tabId).classList.add('active');
+                    
+                    // UI আপডেট করুন
+                    updateUI();
                 });
             });
             
@@ -167,9 +170,14 @@
             const date = document.getElementById('transaction-date').value;
             
             if (!amount || amount <= 0 || !date) {
-                alert('দয়া করে সঠিক তথ্য প্রদান করুন।');
+                showNotification('দয়া করে সঠিক তথ্য প্রদান করুন।', true);
                 return;
             }
+            
+            // তারিখ থেকে মাস এবং বছর বের করা
+            const transactionDate = new Date(date);
+            const transactionMonth = transactionDate.getMonth();
+            const transactionYear = transactionDate.getFullYear();
             
             // শিরোনাম সেট করা
             let transactionTitle = category;
@@ -184,8 +192,8 @@
                 amount,
                 category,
                 date,
-                month: currentMonthIndex,
-                year: currentYear
+                month: transactionMonth,
+                year: transactionYear
             };
             
             transactions.push(transaction);
@@ -197,7 +205,7 @@
             document.getElementById('transaction-amount').value = '';
             document.getElementById('transaction-date').valueAsDate = new Date();
             
-            alert('লেনদেন সফলভাবে যোগ করা হয়েছে!');
+            showNotification('লেনদেন সফলভাবে যোগ করা হয়েছে!');
         }
         
         // জমার লক্ষ্য নির্ধারণ
@@ -206,7 +214,7 @@
             const date = document.getElementById('target-date').value;
             
             if (!target || target <= 0 || !date) {
-                alert('দয়া করে সঠিক লক্ষ্যমাত্রা এবং তারিখ প্রদান করুন।');
+                showNotification('দয়া করে সঠিক লক্ষ্যমাত্রা এবং তারিখ প্রদান করুন।', true);
                 return;
             }
             
@@ -218,7 +226,7 @@
             saveToLocalStorage();
             updateUI();
             
-            alert('জমার লক্ষ্য সফলভাবে নির্ধারণ করা হয়েছে!');
+            showNotification('জমার লক্ষ্য সফলভাবে নির্ধারণ করা হয়েছে!');
         }
         
         // লেনদেন মুছুন
@@ -227,6 +235,7 @@
                 transactions = transactions.filter(transaction => transaction.id !== id);
                 saveToLocalStorage();
                 updateUI();
+                showNotification('লেনদেন মুছে ফেলা হয়েছে!');
             }
         }
         
@@ -293,10 +302,11 @@
                 
                 // টাইপ অনুযায়ী ক্লাস
                 const amountClass = transaction.type === 'income' ? 'positive' : 'negative';
+                const typeText = transaction.type === 'income' ? 'আয়' : transaction.type === 'expense' ? 'ব্যয়' : 'জমা';
                 
                 row.innerHTML = `
                     <td>${formattedDate}</td>
-                    <td>${transaction.type === 'income' ? 'আয়' : transaction.type === 'expense' ? 'ব্যয়' : 'জমা'}</td>
+                    <td>${typeText}</td>
                     <td>${transaction.title}</td>
                     <td class="${amountClass}">৳ ${transaction.amount.toLocaleString()}</td>
                     <td>
@@ -622,4 +632,16 @@
             chartHTML += `</div>`;
             
             savingsTrend.innerHTML = chartHTML;
+        }
+        
+        // নোটিফিকেশন দেখানো
+        function showNotification(message, isError = false) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = isError ? 'notification error' : 'notification';
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
         }
