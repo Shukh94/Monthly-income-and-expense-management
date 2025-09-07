@@ -160,6 +160,14 @@
             background: #27ae60;
         }
         
+        .secondary-btn {
+            background: #3498db;
+        }
+        
+        .secondary-btn:hover {
+            background: #2980b9;
+        }
+        
         .delete-btn {
             background: #e74c3c;
             padding: 8px 12px;
@@ -356,8 +364,19 @@
             font-style: italic;
         }
         
-        .category-selector {
-            display: none;
+        .export-section {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 4px solid #4caf50;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
         }
         
         .notification {

@@ -9,7 +9,7 @@
 
 </head>
 <body>
-     <div class="container">
+    <div class="container">
         <!-- নেভিগেশন বার -->
         <nav class="navbar">
             <div class="nav-container">
@@ -20,6 +20,7 @@
                     <li class="nav-item"><a href="#" class="nav-link active" data-tab="dashboard"><i class="fas fa-home icon"></i> ড্যাশবোর্ড</a></li>
                     <li class="nav-item"><a href="#" class="nav-link" data-tab="monthly-report"><i class="fas fa-chart-pie icon"></i> মাসিক রিপোর্ট</a></li>
                     <li class="nav-item"><a href="#" class="nav-link" data-tab="savings"><i class="fas fa-piggy-bank icon"></i> জমার হিসাব</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link" data-tab="export"><i class="fas fa-download icon"></i> ডেটা সংগ্রহ</a></li>
                 </ul>
             </div>
         </nav>
@@ -188,6 +189,75 @@
                         <i class="fas fa-chart-line" style="font-size: 48px; margin-bottom: 15px;"></i>
                         <p>জমার প্রবণতা দেখানোর জন্য পর্যাপ্ত ডেটা নেই</p>
                     </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ডেটা সংগ্রহ ট্যাব -->
+        <div id="export" class="tab-content">
+            <div class="card">
+                <h2><i class="fas fa-download icon"></i> ডেটা সংগ্রহ ও এক্সপোর্ট</h2>
+                <p>এখানে আপনি আপনার সমস্ত আয়-ব্যয়ের ডেটা CSV ফরম্যাটে ডাউনলোড করতে পারবেন। এই ফাইলটি এক্সেল বা Google Sheets-এ খোলা যাবে।</p>
+                
+                <div class="export-section">
+                    <h3><i class="fas fa-file-csv icon"></i> CSV ফরম্যাটে ডেটা ডাউনলোড</h3>
+                    <p>নিচের বাটনগুলি ব্যবহার করে বিভিন্ন ধরনের ডেটা ডাউনলোড করুন:</p>
+                    
+                    <div class="btn-group">
+                        <button id="export-transactions" class="secondary-btn"><i class="fas fa-download icon"></i> সমস্ত লেনদেন ডাউনলোড</button>
+                        <button id="export-monthly" class="secondary-btn"><i class="fas fa-download icon"></i> মাসিক রিপোর্ট ডাউনলোড</button>
+                        <button id="export-savings" class="secondary-btn"><i class="fas fa-download icon"></i> জমার রিপোর্ট ডাউনলোড</button>
+                    </div>
+                </div>
+                
+                <div class="export-section">
+                    <h3><i class="fas fa-database icon"></i> ডেটা ব্যাকআপ</h3>
+                    <p>আপনি চাইলে আপনার সমস্ত ডেটা JSON ফরম্যাটে ব্যাকআপ করতে পারেন এবং পরে তা রিস্টোর করতে পারেন:</p>
+                    
+                    <div class="btn-group">
+                        <button id="backup-data" class="secondary-btn"><i class="fas fa-save icon"></i> সম্পূর্ণ ডেটা ব্যাকআপ</button>
+                        <button id="restore-data" class="secondary-btn"><i class="fas fa-upload icon"></i> ডেটা রিস্টোর করুন</button>
+                        <input type="file" id="restore-file" accept=".json" style="display: none;">
+                    </div>
+                </div>
+                
+                <div class="export-section">
+                    <h3><i class="fas fa-chart-bar icon"></i> কাস্টম রিপোর্ট তৈরি করুন</h3>
+                    <p>নির্দিষ্ট সময়সীমার জন্য রিপোর্ট তৈরি করুন:</p>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="start-date">শুরুর তারিখ</label>
+                            <input type="date" id="start-date">
+                        </div>
+                        <div class="form-group">
+                            <label for="end-date">শেষ তারিখ</label>
+                            <input type="date" id="end-date">
+                        </div>
+                    </div>
+                    
+                    <button id="generate-custom-report" class="secondary-btn"><i class="fas fa-cog icon"></i> কাস্টম রিপোর্ট তৈরি করুন</button>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-history icon"></i> ডাউনলোড ইতিহাস</h2>
+                <div class="table-container">
+                    <table id="export-history-table">
+                        <thead>
+                            <tr>
+                                <th>তারিখ</th>
+                                <th>ফাইলের নাম</th>
+                                <th>ধরন</th>
+                                <th>কার্যক্রম</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="4" style="text-align: center;">কোনো ডাউনলোড ইতিহাস নেই</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
