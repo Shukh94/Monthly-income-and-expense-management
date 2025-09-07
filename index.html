@@ -1,284 +1,1614 @@
 <!DOCTYPE html>
 <html lang="bn">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>মাসিক আয়, ব্যয় ও জমা ব্যবস্থাপনা</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", "SolaimanLipi", "Vrinda", sans-serif;
+      }
+
+      body {
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      /* নেভিগেশন বার */
+      .navbar {
+        background: linear-gradient(135deg, #3498db, #2c3e50);
+        color: white;
+        padding: 15px 0;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .nav-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+      }
+
+      .logo {
+        font-size: 24px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+      }
+
+      .logo i {
+        margin-right: 10px;
+      }
+
+      .nav-menu {
+        display: flex;
+        list-style: none;
+      }
+
+      .nav-item {
+        margin-left: 25px;
+      }
+
+      .nav-link {
+        color: white;
+        text-decoration: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        transition: background 0.3s;
+        font-weight: 500;
+      }
+
+      .nav-link:hover,
+      .nav-link.active {
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      /* কার্ড স্টাইল */
+      .card {
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        margin-bottom: 25px;
+      }
+
+      /* সামারি কার্ড */
+      .summary-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-bottom: 25px;
+      }
+
+      .summary-card {
+        padding: 20px;
+        border-radius: 10px;
+        color: white;
+        text-align: center;
+      }
+
+      .summary-card.income {
+        background: linear-gradient(135deg, #2ecc71, #27ae60);
+      }
+
+      .summary-card.expense {
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+      }
+
+      .summary-card.savings {
+        background: linear-gradient(135deg, #3498db, #2980b9);
+      }
+
+      .summary-card.remaining {
+        background: linear-gradient(135deg, #9b59b6, #8e44ad);
+      }
+
+      .summary-card h3 {
+        margin-bottom: 10px;
+        font-size: 18px;
+      }
+
+      .summary-card .amount {
+        font-size: 28px;
+        font-weight: bold;
+      }
+
+      /* ফর্ম স্টাইল */
+      .form-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 15px;
+        margin-bottom: 15px;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #2c3e50;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 16px;
+      }
+
+      button {
+        background: #2ecc71;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 16px;
+        transition: background 0.3s;
+      }
+
+      button:hover {
+        background: #27ae60;
+      }
+
+      .delete-btn {
+        background: #e74c3c;
+        padding: 8px 12px;
+        font-size: 14px;
+      }
+
+      .delete-btn:hover {
+        background: #c0392b;
+      }
+
+      /* টেবিল স্টাইল */
+      .table-container {
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+
+      th,
+      td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+
+      th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+        color: #2c3e50;
+      }
+
+      tr:hover {
+        background-color: #f9f9f9;
+      }
+
+      /* চার্ট স্টাইল */
+      .chart-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin-top: 30px;
+      }
+
+      .chart {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+      }
+
+      .chart-title {
+        text-align: center;
+        margin-bottom: 15px;
+        color: #2c3e50;
+      }
+
+      .chart-content {
+        height: 250px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
+
+      .ratio-bar {
+        width: 80%;
+        height: 30px;
+        background: #ecf0f1;
+        border-radius: 15px;
+        overflow: hidden;
+        margin: 10px 0;
+        position: relative;
+      }
+
+      .ratio-fill {
+        height: 100%;
+        border-radius: 15px;
+      }
+
+      .ratio-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-weight: bold;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+      }
+
+      /* মাস নির্বাচক */
+      .month-selector {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .month-nav {
+        display: flex;
+        align-items: center;
+      }
+
+      .month-name {
+        font-size: 20px;
+        font-weight: bold;
+        margin: 0 15px;
+        color: #2c3e50;
+      }
+
+      .nav-btn {
+        background: #3498db;
+        color: white;
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 18px;
+      }
+
+      /* রেস্পন্সিভ ডিজাইন */
+      @media (max-width: 768px) {
+        .nav-container {
+          flex-direction: column;
+        }
+
+        .nav-menu {
+          margin-top: 15px;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+
+        .nav-item {
+          margin: 5px;
+        }
+
+        .form-row {
+          grid-template-columns: 1fr;
+        }
+
+        .summary-cards {
+          grid-template-columns: 1fr;
+        }
+
+        .chart-container {
+          grid-template-columns: 1fr;
+        }
+
+        .month-selector {
+          flex-direction: column;
+          gap: 15px;
+        }
+      }
+
+      /* ট্যাব কনটেন্ট */
+      .tab-content {
+        display: none;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      /* আইকন স্টাইল */
+      .icon {
+        margin-right: 8px;
+      }
+
+      .positive {
+        color: #27ae60;
+      }
+
+      .negative {
+        color: #e74c3c;
+      }
+
+      .savings-goal {
+        background: #fff8e1;
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 15px;
+        border-left: 4px solid #ffc107;
+      }
+
+      .empty-data {
+        text-align: center;
+        padding: 40px;
+        color: #7f8c8d;
+        font-style: italic;
+      }
+
+      .category-selector {
+        display: none;
+      }
+
+      .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 20px;
+        border-radius: 5px;
+        color: white;
+        background: #2ecc71;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        opacity: 0;
+        transform: translateY(-20px);
+        transition: all 0.3s ease;
+      }
+
+      .notification.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .notification.error {
+        background: #e74c3c;
+      }
+
+      /* ডাউনলোড বাটন স্টাইল */
+      .download-btn {
+        background: #9b59b6;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 16px;
+        transition: background 0.3s;
+        margin: 10px 5px;
+      }
+
+      .download-btn:hover {
+        background: #8e44ad;
+      }
+
+      .download-options {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 20px;
+      }
+
+      .format-option {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        text-align: center;
+        flex: 1;
+        min-width: 200px;
+      }
+
+      .format-option h3 {
+        margin-bottom: 15px;
+        color: #2c3e50;
+      }
+
+      .format-option p {
+        color: #7f8c8d;
+        margin-bottom: 15px;
+      }
+    </style>
+  </head>
+  <body>
     <div class="container">
-        <!-- নেভিগেশন বার -->
-        <nav class="navbar">
-            <div class="nav-container">
-                <div class="logo">
-                    <i class="fas fa-wallet"></i> অর্থ ব্যবস্থাপনা
-                </div>
-                <ul class="nav-menu">
-                    <li class="nav-item"><a href="#" class="nav-link active" data-tab="dashboard"><i class="fas fa-home icon"></i> ড্যাশবোর্ড</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link" data-tab="monthly-report"><i class="fas fa-chart-pie icon"></i> মাসিক রিপোর্ট</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link" data-tab="savings"><i class="fas fa-piggy-bank icon"></i> জমার হিসাব</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link" data-tab="backup"><i class="fas fa-database icon"></i> ডেটা ব্যাকআপ</a></li>
-                </ul>
-            </div>
-        </nav>
-        
-        <!-- মাস নির্বাচক -->
-        <div class="month-selector">
-            <div class="month-nav">
-                <button class="nav-btn" id="prev-month"><i class="fas fa-chevron-left"></i></button>
-                <div class="month-name" id="current-month"></div>
-                <button class="nav-btn" id="next-month"><i class="fas fa-chevron-right"></i></button>
-            </div>
-            <div class="sync-status">
-                <i class="fas fa-info-circle"></i>
-                <span>ডেটা শুধুমাত্র এই ব্রাউজারে সংরক্ষিত হচ্ছে। নিয়মিত ব্যাকআপ নিন।</span>
-            </div>
+      <!-- নেভিগেশন বার -->
+      <nav class="navbar">
+        <div class="nav-container">
+          <div class="logo"><i class="fas fa-wallet"></i> অর্থ ব্যবস্থাপনা</div>
+          <ul class="nav-menu">
+            <li class="nav-item">
+              <a href="#" class="nav-link active" data-tab="dashboard"
+                ><i class="fas fa-home icon"></i> ড্যাশবোর্ড</a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link" data-tab="monthly-report"
+                ><i class="fas fa-chart-pie icon"></i> মাসিক রিপোর্ট</a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link" data-tab="savings"
+                ><i class="fas fa-piggy-bank icon"></i> জমার হিসাব</a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link" data-tab="data-export"
+                ><i class="fas fa-download icon"></i> ডেটা ডাউনলোড</a
+              >
+            </li>
+          </ul>
         </div>
-        
-        <!-- ড্যাশবোর্ড ট্যাব -->
-        <div id="dashboard" class="tab-content active">
-            <!-- সামারি কার্ড -->
-            <div class="summary-cards">
-                <div class="summary-card income">
-                    <h3><i class="fas fa-money-bill-wave icon"></i> মোট আয়</h3>
-                    <div class="amount" id="total-income">৳ ০</div>
-                </div>
-                <div class="summary-card expense">
-                    <h3><i class="fas fa-shopping-cart icon"></i> মোট ব্যয়</h3>
-                    <div class="amount" id="total-expense">৳ ০</div>
-                </div>
-                <div class="summary-card savings">
-                    <h3><i class="fas fa-piggy-bank icon"></i> মোট জমা</h3>
-                    <div class="amount" id="total-savings">৳ ০</div>
-                </div>
-                <div class="summary-card remaining">
-                    <h3><i class="fas fa-wallet icon"></i> অবশিষ্ট অর্থ</h3>
-                    <div class="amount" id="remaining-amount">৳ ০</div>
-                </div>
-            </div>
-            
-            <!-- আয় ও ব্যয় ফর্ম -->
-            <div class="card">
-                <h2><i class="fas fa-plus-circle icon"></i> নতুন লেনদেন যোগ করুন</h2>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="transaction-type">লেনদেনের ধরন</label>
-                        <select id="transaction-type">
-                            <option value="income">আয়</option>
-                            <option value="expense">ব্যয়</option>
-                            <option value="savings">জমা</option>
-                        </select>
-                    </div>
-                    <div class="form-group" id="title-field">
-                        <label for="transaction-title">শিরোনাম</label>
-                        <input type="text" id="transaction-title" placeholder="লেনদেনের শিরোনাম">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="transaction-amount">টাকার পরিমাণ</label>
-                        <input type="number" id="transaction-amount" placeholder="৳">
-                    </div>
-                    <div class="form-group">
-                        <label for="transaction-category">ক্যাটাগরি</label>
-                        <select id="transaction-category">
-                            <!-- ক্যাটাগরি অপশনগুলি JavaScript দ্বারা যোগ করা হবে -->
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="transaction-date">তারিখ</label>
-                    <input type="date" id="transaction-date">
-                </div>
-                <button id="add-transaction"><i class="fas fa-check icon"></i> যোগ করুন</button>
-            </div>
-            
-            <!-- আয় ও ব্যয়ের তালিকা -->
-            <div class="card">
-                <h2><i class="fas fa-list icon"></i> সাম্প্রতিক লেনদেন</h2>
-                <div class="table-container">
-                    <table id="transactions-table">
-                        <thead>
-                            <tr>
-                                <th>তারিখ</th>
-                                <th>ধরন</th>
-                                <th>বিবরণ</th>
-                                <th>পরিমাণ</th>
-                                <th>কার্যক্রম</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- লেনদেনগুলি JavaScript দ্বারা যোগ করা হবে -->
-                        </tbody>
-                    </table>
-                    <div id="no-transactions" class="empty-data">
-                        <i class="fas fa-receipt" style="font-size: 48px; margin-bottom: 15px;"></i>
-                        <p>কোনো লেনদেন যোগ করা হয়নি</p>
-                    </div>
-                </div>
-            </div>
+      </nav>
+
+      <!-- মাস নির্বাচক -->
+      <div class="month-selector">
+        <div class="month-nav">
+          <button class="nav-btn" id="prev-month">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <div class="month-name" id="current-month"></div>
+          <button class="nav-btn" id="next-month">
+            <i class="fas fa-chevron-right"></i>
+          </button>
         </div>
-        
-        <!-- মাসিক রিপোর্ট ট্যাব -->
-        <div id="monthly-report" class="tab-content">
-            <div class="card">
-                <h2><i class="fas fa-chart-pie icon"></i> ব্যয়ের বিশ্লেষণ</h2>
-                <div id="expense-analysis">
-                    <div class="empty-data">
-                        <i class="fas fa-chart-pie" style="font-size: 48px; margin-bottom: 15px;"></i>
-                        <p>ব্যয়ের ডেটা বিশ্লেষণের জন্য পর্যাপ্ত তথ্য নেই</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h2><i class="fas fa-history icon"></i> গত মাসের তুলনা</h2>
-                <div id="month-comparison">
-                    <div class="empty-data">
-                        <i class="fas fa-chart-bar" style="font-size: 48px; margin-bottom: 15px;"></i>
-                        <p>তুলনা করার জন্য পর্যাপ্ত ডেটা নেই</p>
-                    </div>
-                </div>
-            </div>
+        <button id="add-transaction-btn">
+          <i class="fas fa-plus icon"></i> নতুন লেনদেন যোগ করুন
+        </button>
+      </div>
+
+      <!-- ড্যাশবোর্ড ট্যাব -->
+      <div id="dashboard" class="tab-content active">
+        <!-- সামারি কার্ড -->
+        <div class="summary-cards">
+          <div class="summary-card income">
+            <h3><i class="fas fa-money-bill-wave icon"></i> মোট আয়</h3>
+            <div class="amount" id="total-income">৳ ০</div>
+          </div>
+          <div class="summary-card expense">
+            <h3><i class="fas fa-shopping-cart icon"></i> মোট ব্যয়</h3>
+            <div class="amount" id="total-expense">৳ ০</div>
+          </div>
+          <div class="summary-card savings">
+            <h3><i class="fas fa-piggy-bank icon"></i> মোট জমা</h3>
+            <div class="amount" id="total-savings">৳ ০</div>
+          </div>
+          <div class="summary-card remaining">
+            <h3><i class="fas fa-wallet icon"></i> অবশিষ্ট অর্থ</h3>
+            <div class="amount" id="remaining-amount">৳ ০</div>
+          </div>
         </div>
-        
-        <!-- জমার হিসাব ট্যাব -->
-        <div id="savings" class="tab-content">
-            <div class="card">
-                <h2><i class="fas fa-piggy-bank icon"></i> জমার বিবরণ</h2>
-                <div class="savings-goal">
-                    <h3><i class="fas fa-bullseye icon"></i> জমার লক্ষ্য</h3>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="savings-target">লক্ষ্যমাত্রা (৳)</label>
-                            <input type="number" id="savings-target" placeholder="লক্ষ্যমাত্রা">
-                        </div>
-                        <div class="form-group">
-                            <label for="target-date">লক্ষ্য তারিখ</label>
-                            <input type="date" id="target-date">
-                        </div>
-                    </div>
-                    <button id="set-goal"><i class="fas fa-target icon"></i> লক্ষ্য নির্ধারণ করুন</button>
-                </div>
-                
-                <div class="table-container" style="margin-top: 20px;">
-                    <table id="savings-table">
-                        <thead>
-                            <tr>
-                                <th>মাস</th>
-                                <th>জমার পরিমাণ</th>
-                                <th>লক্ষ্যমাত্রা</th>
-                                <th>অবস্থা</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- জমার ডেটা JavaScript দ্বারা যোগ করা হবে -->
-                        </tbody>
-                    </table>
-                    <div id="no-savings" class="empty-data">
-                        <i class="fas fa-piggy-bank" style="font-size: 48px; margin-bottom: 15px;"></i>
-                        <p>কোনো জমার তথ্য পাওয়া যায়নি</p>
-                    </div>
-                </div>
+
+        <!-- আয় ও ব্যয় ফর্ম -->
+        <div class="card">
+          <h2><i class="fas fa-plus-circle icon"></i> নতুন লেনদেন যোগ করুন</h2>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="transaction-type">লেনদেনের ধরন</label>
+              <select id="transaction-type">
+                <option value="income">আয়</option>
+                <option value="expense">ব্যয়</option>
+                <option value="savings">জমা</option>
+              </select>
             </div>
-            
-            <div class="card">
-                <h2><i class="fas fa-chart-line icon"></i> জমার প্রবণতা</h2>
-                <div id="savings-trend">
-                    <div class="empty-data">
-                        <i class="fas fa-chart-line" style="font-size: 48px; margin-bottom: 15px;"></i>
-                        <p>জমার প্রবণতা দেখানোর জন্য পর্যাপ্ত ডেটা নেই</p>
-                    </div>
-                </div>
+            <div class="form-group" id="title-field">
+              <label for="transaction-title">শিরোনাম</label>
+              <input
+                type="text"
+                id="transaction-title"
+                placeholder="লেনদেনের শিরোনাম"
+              />
             </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="transaction-amount">টাকার পরিমাণ</label>
+              <input type="number" id="transaction-amount" placeholder="৳" />
+            </div>
+            <div class="form-group">
+              <label for="transaction-category">ক্যাটাগরি</label>
+              <select id="transaction-category">
+                <!-- ক্যাটাগরি অপশনগুলি JavaScript দ্বারা যোগ করা হবে -->
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="transaction-date">তারিখ</label>
+            <input type="date" id="transaction-date" />
+          </div>
+          <button id="add-transaction">
+            <i class="fas fa-check icon"></i> যোগ করুন
+          </button>
         </div>
-        
-        <!-- ডেটা ব্যাকআপ ট্যাব -->
-        <div id="backup" class="tab-content">
-            <div class="card">
-                <h2><i class="fas fa-database icon"></i> ডেটা ব্যাকআপ ও রিস্টোর</h2>
-                <p>আপনার সমস্ত ডেটা নিয়মিত ব্যাকআপ করুন যাতে যেকোনো ডিভাইস বা 브্রাউজার থেকে এক্সেস করতে পারেন।</p>
-                
-                <div class="export-section">
-                    <h3><i class="fas fa-download icon"></i> ডেটা ব্যাকআপ</h3>
-                    <p>আপনার সমস্ত লেনদেন এবং সেটিংস একটি JSON ফাইলে ডাউনলোড করুন। এই ফাইলটি সংরক্ষণ করুন এবং প্রয়োজন時に রিস্টোর করতে ব্যবহার করুন।</p>
-                    
-                    <div class="btn-group">
-                        <button id="backup-data" class="secondary-btn"><i class="fas fa-save icon"></i> সম্পূর্ণ ডেটা ব্যাকআপ</button>
-                    </div>
-                </div>
-                
-                <div class="export-section">
-                    <h3><i class="fas fa-upload icon"></i> ডেটা রিস্টোর</h3>
-                    <p>পূর্বে সংরক্ষিত ব্যাকআপ ফাইল থেকে আপনার ডেটা রিস্টোর করুন।</p>
-                    
-                    <div class="btn-group">
-                        <button id="restore-data" class="secondary-btn"><i class="fas fa-upload icon"></i> ডেটা রিস্টোর করুন</button>
-                        <input type="file" id="restore-file" accept=".json" style="display: none;">
-                    </div>
-                </div>
-                
-                <div class="export-section">
-                    <h3><i class="fas fa-file-csv icon"></i> CSV রিপোর্ট</h3>
-                    <p>এক্সেল বা Google Sheets-এ ব্যবহারের জন্য আপনার ডেটা CSV ফরম্যাটে ডাউনলোড করুন।</p>
-                    
-                    <div class="btn-group">
-                        <button id="export-transactions" class="secondary-btn"><i class="fas fa-download icon"></i> সমস্ত লেনদেন ডাউনলোড</button>
-                        <button id="export-monthly" class="secondary-btn"><i class="fas fa-download icon"></i> মাসিক রিপোর্ট ডাউনলোড</button>
-                    </div>
-                </div>
-                
-                <div class="export-section">
-                    <h3><i class="fas fa-sync-alt icon"></i> অটো-ব্যাকআপ সেটিংস</h3>
-                    <p>আপনার ডেটা স্বয়ংক্রিয়ভাবে ব্যাকআপ করার জন্য সেটিংস কনফিগার করুন।</p>
-                    
-                    <div class="form-group">
-                        <label for="auto-backup">
-                            <input type="checkbox" id="auto-backup"> স্বয়ংক্রিয় ব্যাকআপ সক্রিয় করুন
-                        </label>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="backup-frequency">ব্যাকআপ ফ্রিকোয়েন্সি</label>
-                        <select id="backup-frequency">
-                            <option value="7">সাপ্তাহিক</option>
-                            <option value="14">প্রতি দুই সপ্তাহে</option>
-                            <option value="30">মাসিক</option>
-                        </select>
-                    </div>
-                    
-                    <button id="save-backup-settings" class="secondary-btn"><i class="fas fa-cog icon"></i> সেটিংস সংরক্ষণ করুন</button>
-                </div>
+
+        <!-- আয় ও ব্যয়ের তালিকা -->
+        <div class="card">
+          <h2><i class="fas fa-list icon"></i> সাম্প্রতিক লেনদেন</h2>
+          <div class="table-container">
+            <table id="transactions-table">
+              <thead>
+                <tr>
+                  <th>তারিখ</th>
+                  <th>ধরন</th>
+                  <th>বিবরণ</th>
+                  <th>পরিমাণ</th>
+                  <th>কার্যক্রম</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- লেনদেনগুলি JavaScript দ্বারা যোগ করা হবে -->
+              </tbody>
+            </table>
+            <div id="no-transactions" class="empty-data">
+              <i
+                class="fas fa-receipt"
+                style="font-size: 48px; margin-bottom: 15px"
+              ></i>
+              <p>কোনো লেনদেন যোগ করা হয়নি</p>
             </div>
-            
-            <div class="card">
-                <h2><i class="fas fa-history icon"></i> ব্যাকআপ ইতিহাস</h2>
-                <div class="table-container">
-                    <table id="backup-history-table">
-                        <thead>
-                            <tr>
-                                <th>তারিখ</th>
-                                <th>বিবরণ</th>
-                                <th>ফাইলের আকার</th>
-                                <th>কার্যক্রম</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td colspan="4" style="text-align: center;">কোনো ব্যাকآপ ইতিহাস নেই</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+          </div>
         </div>
+      </div>
+
+      <!-- মাসিক রিপোর্ট ট্যাব -->
+      <div id="monthly-report" class="tab-content">
+        <div class="card">
+          <h2><i class="fas fa-chart-pie icon"></i> ব্যয়ের বিশ্লেষণ</h2>
+          <div id="expense-analysis">
+            <div class="empty-data">
+              <i
+                class="fas fa-chart-pie"
+                style="font-size: 48px; margin-bottom: 15px"
+              ></i>
+              <p>ব্যয়ের ডেটা বিশ্লেষণের জন্য পর্যাপ্ত তথ্য নেই</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2><i class="fas fa-history icon"></i> গত মাসের তুলনা</h2>
+          <div id="month-comparison">
+            <div class="empty-data">
+              <i
+                class="fas fa-chart-bar"
+                style="font-size: 48px; margin-bottom: 15px"
+              ></i>
+              <p>তুলনা করার জন্য পর্যাপ্ত ডেটা নেই</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- জমার হিসাব ট্যাব -->
+      <div id="savings" class="tab-content">
+        <div class="card">
+          <h2><i class="fas fa-piggy-bank icon"></i> জমার বিবরণ</h2>
+          <div class="savings-goal">
+            <h3><i class="fas fa-bullseye icon"></i> জমার লক্ষ্য</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="savings-target">লক্ষ্যমাত্রা (৳)</label>
+                <input
+                  type="number"
+                  id="savings-target"
+                  placeholder="লক্ষ্যমাত্রা"
+                />
+              </div>
+              <div class="form-group">
+                <label for="target-date">লক্ষ্য তারিখ</label>
+                <input type="date" id="target-date" />
+              </div>
+            </div>
+            <button id="set-goal">
+              <i class="fas fa-target icon"></i> লক্ষ্য নির্ধারণ করুন
+            </button>
+          </div>
+
+          <div class="table-container" style="margin-top: 20px">
+            <table id="savings-table">
+              <thead>
+                <tr>
+                  <th>মাস</th>
+                  <th>জমার পরিমাণ</th>
+                  <th>লক্ষ্যমাত্রা</th>
+                  <th>অবস্থা</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- জমার ডেটা JavaScript দ্বারা যোগ করা হবে -->
+              </tbody>
+            </table>
+            <div id="no-savings" class="empty-data">
+              <i
+                class="fas fa-piggy-bank"
+                style="font-size: 48px; margin-bottom: 15px"
+              ></i>
+              <p>কোনো জমার তথ্য পাওয়া যায়নি</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2><i class="fas fa-chart-line icon"></i> জমার প্রবণতা</h2>
+          <div id="savings-trend">
+            <div class="empty-data">
+              <i
+                class="fas fa-chart-line"
+                style="font-size: 48px; margin-bottom: 15px"
+              ></i>
+              <p>জমার প্রবণতা দেখানোর জন্য পর্যাপ্ত ডেটা নেই</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ডেটা ডাউনলোড ট্যাব -->
+      <div id="data-export" class="tab-content">
+        <div class="card">
+          <h2><i class="fas fa-download icon"></i> ডেটা ডাউনলোড</h2>
+          <p>
+            আপনার সকল আয়, ব্যয় ও জমার তথ্য ডাউনলোড করুন। ডেটা CSV বা JSON
+            ফরম্যাটে ডাউনলোড করা যাবে।
+          </p>
+
+          <div class="download-options">
+            <div class="format-option">
+              <h3>
+                <i class="fas fa-file-csv" style="color: #27ae60"></i> CSV
+                ফরম্যাট
+              </h3>
+              <p>স্প্রেডশীট বা ডেটাবেসে ব্যবহারের জন্য উপযুক্ত</p>
+              <button class="download-btn" id="download-csv">
+                <i class="fas fa-download icon"></i> CSV ডাউনলোড
+              </button>
+            </div>
+
+            <div class="format-option">
+              <h3>
+                <i class="fas fa-file-code" style="color: #3498db"></i> JSON
+                ফরম্যাট
+              </h3>
+              <p>ব্যাকআপ বা অন্য অ্যাপ্লিকেশনে ব্যবহারের জন্য উপযুক্ত</p>
+              <button class="download-btn" id="download-json">
+                <i class="fas fa-download icon"></i> JSON ডাউনলোড
+              </button>
+            </div>
+          </div>
+
+          <div
+            style="
+              margin-top: 30px;
+              background: #f8f9fa;
+              padding: 15px;
+              border-radius: 8px;
+            "
+          >
+            <h3><i class="fas fa-info-circle icon"></i> তথ্য</h3>
+            <p>
+              ডাউনলোড করা ফাইলে আপনার সকল লেনদেনের তথ্য এবং জমার লক্ষ্য থাকবে।
+              এই ডেটা আপনার ব্রাউজারের লোকাল স্টোরেজ থেকে নেওয়া হয়েছে।
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div id="notification" class="notification"></div>
 
-    <!-- মূল JavaScript ফাইল -->
-    <script src="app.js"></script>
-</body>
+    <script>
+      // ডেটা মডেল
+      let transactions = [];
+      let savingsGoal = { target: null, date: null };
+      let currentMonthIndex = new Date().getMonth();
+      let currentYear = new Date().getFullYear();
+
+      // ক্যাটাগরি তালিকা
+      const categories = {
+        income: ["বেতন", "ফ্রিল্যান্সিং", "ব্যবসা", "অন্যান্য আয়"],
+        expense: [
+          "খাবার",
+          "বাসস্থান",
+          "Transport",
+          "চিকিৎসা",
+          "শিক্ষা",
+          "বিনোদন",
+          "অন্যান্য ব্যয়",
+        ],
+        savings: ["ডিপিএস", "ব্যাংক জমা", "নগদ জমা", "অন্যান্য জমা"],
+      };
+
+      // DOM লোড হওয়ার পর ফাংশনগুলো এক্সিকিউট করুন
+      document.addEventListener("DOMContentLoaded", function () {
+        loadFromLocalStorage();
+        initializeUI();
+        updateUI();
+
+        // ডাউনলোড বাটনে ইভেন্ট লিসেনার যোগ করুন
+        document
+          .getElementById("download-csv")
+          .addEventListener("click", downloadCSV);
+        document
+          .getElementById("download-json")
+          .addEventListener("click", downloadJSON);
+      });
+
+      // UI ইনিশিয়ালাইজেশন
+      function initializeUI() {
+        // মাস নির্বাচক সেটআপ
+        updateMonthDisplay();
+
+        // ক্যাটাগরি অপশন লোড করা
+        loadCategoryOptions();
+
+        // আজকের তারিখ সেট করা
+        document.getElementById("transaction-date").valueAsDate = new Date();
+
+        // ইভেন্ট লিসেনার যোগ করা
+        setupEventListeners();
+
+        // লেনদেনের ধরন পরিবর্তন শনাক্ত করা
+        document
+          .getElementById("transaction-type")
+          .addEventListener("change", function () {
+            updateCategoryOptions(this.value);
+            toggleTitleField(this.value);
+          });
+
+        // প্রাথমিকভাবে ক্যাটাগরি অপশন সেট করা
+        updateCategoryOptions("income");
+        toggleTitleField("income");
+      }
+
+      // ইভেন্ট লিসেনার সেটআপ
+      function setupEventListeners() {
+        // ট্যাব নেভিগেশন
+        document.querySelectorAll(".nav-link").forEach((link) => {
+          link.addEventListener("click", function (e) {
+            e.preventDefault();
+
+            // সক্রিয় ট্যাব আপডেট করুন
+            document
+              .querySelectorAll(".nav-link")
+              .forEach((l) => l.classList.remove("active"));
+            this.classList.add("active");
+
+            // ট্যাব কনটেন্ট দেখান
+            const tabId = this.getAttribute("data-tab");
+            document
+              .querySelectorAll(".tab-content")
+              .forEach((tab) => tab.classList.remove("active"));
+            document.getElementById(tabId).classList.add("active");
+
+            // UI আপডেট করুন
+            updateUI();
+          });
+        });
+
+        // মাস নির্বাচন কার্যকারিতা
+        document
+          .getElementById("prev-month")
+          .addEventListener("click", function () {
+            if (currentMonthIndex > 0) {
+              currentMonthIndex--;
+            } else {
+              currentMonthIndex = 11;
+              currentYear--;
+            }
+            updateMonthDisplay();
+            updateUI();
+          });
+
+        document
+          .getElementById("next-month")
+          .addEventListener("click", function () {
+            if (currentMonthIndex < 11) {
+              currentMonthIndex++;
+            } else {
+              currentMonthIndex = 0;
+              currentYear++;
+            }
+            updateMonthDisplay();
+            updateUI();
+          });
+
+        // নতুন লেনদেন যোগ করুন বাটন
+        document
+          .getElementById("add-transaction")
+          .addEventListener("click", addTransaction);
+
+        // লক্ষ্য নির্ধারণ বাটন
+        document
+          .getElementById("set-goal")
+          .addEventListener("click", setSavingsGoal);
+      }
+
+      // লোকাল স্টোরেজ থেকে ডেটা লোড করা
+      function loadFromLocalStorage() {
+        const savedTransactions = localStorage.getItem("transactions");
+        const savedSavingsGoal = localStorage.getItem("savingsGoal");
+
+        if (savedTransactions) {
+          transactions = JSON.parse(savedTransactions);
+        }
+
+        if (savedSavingsGoal) {
+          savingsGoal = JSON.parse(savedSavingsGoal);
+          document.getElementById("savings-target").value = savingsGoal.target;
+          document.getElementById("target-date").value = savingsGoal.date;
+        }
+      }
+
+      // লোকাল স্টোরেজে ডেটা সেভ করা
+      function saveToLocalStorage() {
+        localStorage.setItem("transactions", JSON.stringify(transactions));
+        localStorage.setItem("savingsGoal", JSON.stringify(savingsGoal));
+      }
+
+      // মাস প্রদর্শন আপডেট করা
+      function updateMonthDisplay() {
+        const monthNames = [
+          "জানুয়ারি",
+          "ফেব্রুয়ারি",
+          "মার্চ",
+          "এপ্রিল",
+          "মে",
+          "জুন",
+          "জুলাই",
+          "আগস্ট",
+          "সেপ্টেম্বর",
+          "অক্টোবর",
+          "নভেম্বর",
+          "ডিসেম্বর",
+        ];
+        document.getElementById(
+          "current-month"
+        ).textContent = `${monthNames[currentMonthIndex]} ${currentYear}`;
+      }
+
+      // ক্যাটাগরি অপশন লোড করা
+      function loadCategoryOptions() {
+        const categorySelect = document.getElementById("transaction-category");
+        categorySelect.innerHTML = "";
+
+        // আয় ক্যাটাগরি যোগ করা
+        categories.income.forEach((category) => {
+          const option = document.createElement("option");
+          option.value = category;
+          option.textContent = category;
+          categorySelect.appendChild(option);
+        });
+      }
+
+      // লেনদেনের ধরন অনুযায়ী ক্যাটাগরি অপশন আপডেট করা
+      function updateCategoryOptions(type) {
+        const categorySelect = document.getElementById("transaction-category");
+        categorySelect.innerHTML = "";
+
+        const selectedCategories = categories[type] || [];
+
+        selectedCategories.forEach((category) => {
+          const option = document.createElement("option");
+          option.value = category;
+          option.textContent = category;
+          categorySelect.appendChild(option);
+        });
+      }
+
+      // লেনদেনের ধরন অনুযায়ী শিরোনাম ফিল্ড দেখানো/লুকানো
+      function toggleTitleField(type) {
+        const titleField = document.getElementById("title-field");
+        if (type === "income") {
+          titleField.style.display = "none";
+        } else {
+          titleField.style.display = "block";
+        }
+      }
+
+      // নতুন লেনদেন যোগ করা
+      function addTransaction() {
+        const type = document.getElementById("transaction-type").value;
+        const title = document.getElementById("transaction-title").value;
+        const amount = parseFloat(
+          document.getElementById("transaction-amount").value
+        );
+        const category = document.getElementById("transaction-category").value;
+        const date = document.getElementById("transaction-date").value;
+
+        if (!amount || amount <= 0 || !date) {
+          showNotification("দয়া করে সঠিক তথ্য প্রদান করুন।", true);
+          return;
+        }
+
+        // তারিখ থেকে মাস এবং বছর বের করা
+        const transactionDate = new Date(date);
+        const transactionMonth = transactionDate.getMonth();
+        const transactionYear = transactionDate.getFullYear();
+
+        // শিরোনাম সেট করা
+        let transactionTitle = category;
+        if (type !== "income") {
+          transactionTitle = title || category;
+        }
+
+        const transaction = {
+          id: Date.now(),
+          type,
+          title: transactionTitle,
+          amount,
+          category,
+          date,
+          month: transactionMonth,
+          year: transactionYear,
+        };
+
+        transactions.push(transaction);
+        saveToLocalStorage();
+        updateUI();
+
+        // ফর্ম রিসেট করুন
+        document.getElementById("transaction-title").value = "";
+        document.getElementById("transaction-amount").value = "";
+        document.getElementById("transaction-date").valueAsDate = new Date();
+
+        showNotification("লেনদেন সফলভাবে যোগ করা হয়েছে!");
+      }
+
+      // জমার লক্ষ্য নির্ধারণ
+      function setSavingsGoal() {
+        const target = document.getElementById("savings-target").value;
+        const date = document.getElementById("target-date").value;
+
+        if (!target || target <= 0 || !date) {
+          showNotification(
+            "দয়া করে সঠিক লক্ষ্যমাত্রা এবং তারিখ প্রদান করুন।",
+            true
+          );
+          return;
+        }
+
+        savingsGoal = {
+          target: parseFloat(target),
+          date: date,
+        };
+
+        saveToLocalStorage();
+        updateUI();
+
+        showNotification("জমার লক্ষ্য সফলভাবে নির্ধারণ করা হয়েছে!");
+      }
+
+      // লেনদেন মুছুন
+      function deleteTransaction(id) {
+        if (confirm("আপনি কি নিশ্চিত যে আপনি এই লেনদেনটি মুছতে চান?")) {
+          transactions = transactions.filter(
+            (transaction) => transaction.id !== id
+          );
+          saveToLocalStorage();
+          updateUI();
+          showNotification("লেনদেন মুছে ফেলা হয়েছে!");
+        }
+      }
+
+      // UI আপডেট করা
+      function updateUI() {
+        updateSummary();
+        renderTransactions();
+        renderSavingsTable();
+        updateCharts();
+      }
+
+      // সামারি আপডেট করা
+      function updateSummary() {
+        const currentTransactions = transactions.filter(
+          (t) => t.month === currentMonthIndex && t.year === currentYear
+        );
+
+        const totalIncome = currentTransactions
+          .filter((t) => t.type === "income")
+          .reduce((total, t) => total + t.amount, 0);
+
+        const totalExpense = currentTransactions
+          .filter((t) => t.type === "expense")
+          .reduce((total, t) => total + t.amount, 0);
+
+        const totalSavings = currentTransactions
+          .filter((t) => t.type === "savings")
+          .reduce((total, t) => total + t.amount, 0);
+
+        const remaining = totalIncome - totalExpense - totalSavings;
+
+        document.getElementById(
+          "total-income"
+        ).textContent = `৳ ${totalIncome.toLocaleString()}`;
+        document.getElementById(
+          "total-expense"
+        ).textContent = `৳ ${totalExpense.toLocaleString()}`;
+        document.getElementById(
+          "total-savings"
+        ).textContent = `৳ ${totalSavings.toLocaleString()}`;
+        document.getElementById(
+          "remaining-amount"
+        ).textContent = `৳ ${remaining.toLocaleString()}`;
+
+        // রং আপডেট করা
+        document.getElementById("remaining-amount").className =
+          remaining >= 0 ? "amount positive" : "amount negative";
+      }
+
+      // লেনদেন রেন্ডার করা
+      function renderTransactions() {
+        const tableBody = document.querySelector("#transactions-table tbody");
+        const noDataMessage = document.getElementById("no-transactions");
+        tableBody.innerHTML = "";
+
+        const currentTransactions = transactions
+          .filter(
+            (t) => t.month === currentMonthIndex && t.year === currentYear
+          )
+          .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        if (currentTransactions.length === 0) {
+          noDataMessage.style.display = "block";
+          return;
+        }
+
+        noDataMessage.style.display = "none";
+
+        currentTransactions.forEach((transaction) => {
+          const row = document.createElement("tr");
+
+          // তারিখ ফরম্যাট করা
+          const date = new Date(transaction.date);
+          const formattedDate = `${date.getDate()}/${
+            date.getMonth() + 1
+          }/${date.getFullYear()}`;
+
+          // টাইপ অনুযায়ী ক্লাস
+          const amountClass =
+            transaction.type === "income" ? "positive" : "negative";
+          const typeText =
+            transaction.type === "income"
+              ? "আয়"
+              : transaction.type === "expense"
+              ? "ব্যয়"
+              : "জমা";
+
+          row.innerHTML = `
+                    <td>${formattedDate}</td>
+                    <td>${typeText}</td>
+                    <td>${transaction.title}</td>
+                    <td class="${amountClass}">৳ ${transaction.amount.toLocaleString()}</td>
+                    <td>
+                        <button class="delete-btn" onclick="deleteTransaction(${
+                          transaction.id
+                        })">
+                            <i class="fas fa-trash icon"></i> মুছুন
+                        </button>
+                    </td>
+                `;
+
+          tableBody.appendChild(row);
+        });
+      }
+
+      // জমার টেবিল রেন্ডার করা
+      function renderSavingsTable() {
+        const tableBody = document.querySelector("#savings-table tbody");
+        const noDataMessage = document.getElementById("no-savings");
+        tableBody.innerHTML = "";
+
+        // মাসিক জমার ডেটা সংগ্রহ করা
+        const monthlySavings = {};
+
+        transactions
+          .filter((t) => t.type === "savings")
+          .forEach((transaction) => {
+            const key = `${transaction.month}-${transaction.year}`;
+            if (!monthlySavings[key]) {
+              monthlySavings[key] = 0;
+            }
+            monthlySavings[key] += transaction.amount;
+          });
+
+        if (Object.keys(monthlySavings).length === 0) {
+          noDataMessage.style.display = "block";
+          return;
+        }
+
+        noDataMessage.style.display = "none";
+
+        const monthNames = [
+          "জানুয়ারি",
+          "ফেব্রুয়ারি",
+          "মার্চ",
+          "এপ্রিল",
+          "মে",
+          "জুন",
+          "জুলাই",
+          "আগস্ট",
+          "সেপ্টেম্বর",
+          "অক্টোবর",
+          "নভেম্বর",
+          "ডিসেম্বর",
+        ];
+
+        Object.keys(monthlySavings).forEach((key) => {
+          const [month, year] = key.split("-");
+          const savingsAmount = monthlySavings[key];
+          const targetAmount = savingsGoal.target || 0;
+          const status =
+            savingsAmount >= targetAmount ? "লক্ষ্য অর্জিত" : "লক্ষ্যের নিচে";
+          const statusClass =
+            savingsAmount >= targetAmount ? "positive" : "negative";
+
+          const row = document.createElement("tr");
+          row.innerHTML = `
+                    <td>${monthNames[parseInt(month)]} ${year}</td>
+                    <td>৳ ${savingsAmount.toLocaleString()}</td>
+                    <td>৳ ${targetAmount.toLocaleString()}</td>
+                    <td class="${statusClass}">${status}</td>
+                `;
+
+          tableBody.appendChild(row);
+        });
+      }
+
+      // চার্ট আপডেট করা
+      function updateCharts() {
+        // ব্যয় বিশ্লেষণ
+        updateExpenseAnalysis();
+
+        // মাসিক তুলনা
+        updateMonthlyComparison();
+
+        // জমার প্রবণতা
+        updateSavingsTrend();
+      }
+
+      // ব্যয় বিশ্লেষণ আপডেট করা
+      function updateExpenseAnalysis() {
+        const expenseAnalysis = document.getElementById("expense-analysis");
+        const currentExpenses = transactions.filter(
+          (t) =>
+            t.type === "expense" &&
+            t.month === currentMonthIndex &&
+            t.year === currentYear
+        );
+
+        if (currentExpenses.length === 0) {
+          expenseAnalysis.innerHTML = `
+                    <div class="empty-data">
+                        <i class="fas fa-chart-pie" style="font-size: 48px; margin-bottom: 15px;"></i>
+                        <p>ব্যয়ের ডেটা বিশ্লেষণের জন্য পর্যাপ্ত তথ্য নেই</p>
+                    </div>
+                `;
+          return;
+        }
+
+        // ক্যাটাগরি অনুযায়ী ব্যয় গণনা করা
+        const expensesByCategory = {};
+        let totalExpense = 0;
+
+        currentExpenses.forEach((expense) => {
+          if (!expensesByCategory[expense.category]) {
+            expensesByCategory[expense.category] = 0;
+          }
+          expensesByCategory[expense.category] += expense.amount;
+          totalExpense += expense.amount;
+        });
+
+        // চার্ট তৈরি করা
+        let chartHTML = `
+                <div class="chart-container">
+                    <div class="chart">
+                        <h3 class="chart-title">ক্যাটাগরি অনুযায়ী ব্যয়</h3>
+                        <div class="chart-content">
+            `;
+
+        const colors = [
+          "#3498db",
+          "#2ecc71",
+          "#e74c3c",
+          "#9b59b6",
+          "#f39c12",
+          "#1abc9c",
+          "#d35400",
+        ];
+        let colorIndex = 0;
+
+        Object.keys(expensesByCategory).forEach((category) => {
+          const percentage = (
+            (expensesByCategory[category] / totalExpense) *
+            100
+          ).toFixed(1);
+          chartHTML += `
+                    <div class="ratio-bar">
+                        <div class="ratio-fill" style="width: ${percentage}%; background: ${
+            colors[colorIndex % colors.length]
+          };"></div>
+                        <div class="ratio-text">${category}: ${percentage}%</div>
+                    </div>
+                `;
+          colorIndex++;
+        });
+
+        chartHTML += `
+                        </div>
+                    </div>
+                    
+                    <div class="chart">
+                        <h3 class="chart-title">আয়-ব্যয়ের অনুপাত</h3>
+                        <div class="chart-content">
+            `;
+
+        const currentIncome = transactions
+          .filter(
+            (t) =>
+              t.type === "income" &&
+              t.month === currentMonthIndex &&
+              t.year === currentYear
+          )
+          .reduce((total, t) => total + t.amount, 0);
+
+        if (currentIncome > 0) {
+          const expenseRatio = ((totalExpense / currentIncome) * 100).toFixed(
+            1
+          );
+          const savingsRatio = 100 - expenseRatio;
+
+          chartHTML += `
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <h2 style="color: #2c3e50;">${expenseRatio}%</h2>
+                        <p>আয়ের তুলনায় ব্যয়</p>
+                    </div>
+                    <div class="ratio-bar">
+                        <div class="ratio-fill" style="width: ${expenseRatio}%; background: #e74c3c;"></div>
+                        <div class="ratio-text">ব্যয়: ${expenseRatio}%</div>
+                    </div>
+                    <div class="ratio-bar">
+                        <div class="ratio-fill" style="width: ${savingsRatio}%; background: #2ecc71;"></div>
+                        <div class="ratio-text">জমা: ${savingsRatio}%</div>
+                    </div>
+                `;
+        } else {
+          chartHTML += `
+                    <div class="empty-data">
+                        <p>আয়ের ডেটা নেই</p>
+                    </div>
+                `;
+        }
+
+        chartHTML += `
+                        </div>
+                    </div>
+                </div>
+            `;
+
+        expenseAnalysis.innerHTML = chartHTML;
+      }
+
+      // মাসিক তুলনা আপডেট করা
+      function updateMonthlyComparison() {
+        const monthComparison = document.getElementById("month-comparison");
+
+        // কমপক্ষে ২ মাসের ডেটা প্রয়োজন
+        const uniqueMonths = new Set();
+        transactions.forEach((t) => {
+          uniqueMonths.add(`${t.month}-${t.year}`);
+        });
+
+        if (uniqueMonths.size < 2) {
+          monthComparison.innerHTML = `
+                    <div class="empty-data">
+                        <i class="fas fa-chart-bar" style="font-size: 48px; margin-bottom: 15px;"></i>
+                        <p>তুলনা করার জন্য পর্যাপ্ত ডেটা নেই</p>
+                    </div>
+                `;
+          return;
+        }
+
+        // মাসিক আয় ও ব্যয় গণনা করা
+        const monthlyData = {};
+
+        transactions.forEach((transaction) => {
+          const key = `${transaction.month}-${transaction.year}`;
+          if (!monthlyData[key]) {
+            monthlyData[key] = { income: 0, expense: 0 };
+          }
+
+          if (transaction.type === "income") {
+            monthlyData[key].income += transaction.amount;
+          } else if (transaction.type === "expense") {
+            monthlyData[key].expense += transaction.amount;
+          }
+        });
+
+        // চার্ট তৈরি করা
+        let chartHTML = `
+                <div class="chart-container">
+                    <div class="chart">
+                        <h3 class="chart-title">মাসিক আয়ের তুলনা</h3>
+                        <div class="chart-content">
+            `;
+
+        const monthNames = [
+          "জানু",
+          "ফেব্রু",
+          "মার্চ",
+          "এপ্রিল",
+          "মে",
+          "জুন",
+          "জুলাই",
+          "আগস্ট",
+          "সেপ্ট",
+          "অক্টো",
+          "নভে",
+          "ডিসে",
+        ];
+
+        Object.keys(monthlyData).forEach((key) => {
+          const [month, year] = key.split("-");
+          const income = monthlyData[key].income;
+
+          chartHTML += `
+                    <div style="margin: 10px 0; width: 80%;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>${monthNames[parseInt(month)]} ${year}:</span>
+                            <span>৳ ${income.toLocaleString()}</span>
+                        </div>
+                        <div class="ratio-bar">
+                            <div class="ratio-fill" style="width: ${
+                              (income /
+                                Math.max(
+                                  ...Object.values(monthlyData).map(
+                                    (d) => d.income
+                                  )
+                                )) *
+                              100
+                            }%; background: #2ecc71;"></div>
+                        </div>
+                    </div>
+                `;
+        });
+
+        chartHTML += `
+                        </div>
+                    </div>
+                    
+                    <div class="chart">
+                        <h3 class="chart-title">মাসিক ব্যয়ের তুলনা</h3>
+                        <div class="chart-content">
+            `;
+
+        Object.keys(monthlyData).forEach((key) => {
+          const [month, year] = key.split("-");
+          const expense = monthlyData[key].expense;
+
+          chartHTML += `
+                    <div style="margin: 10px 0; width: 80%;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>${monthNames[parseInt(month)]} ${year}:</span>
+                            <span>৳ ${expense.toLocaleString()}</span>
+                        </div>
+                        <div class="ratio-bar">
+                            <div class="ratio-fill" style="width: ${
+                              (expense /
+                                Math.max(
+                                  ...Object.values(monthlyData).map(
+                                    (d) => d.expense
+                                  )
+                                )) *
+                              100
+                            }%; background: #e74c3c;"></div>
+                        </div>
+                    </div>
+                `;
+        });
+
+        chartHTML += `
+                        </div>
+                    </div>
+                </div>
+            `;
+
+        monthComparison.innerHTML = chartHTML;
+      }
+
+      // জমার প্রবণতা আপডেট করা
+      function updateSavingsTrend() {
+        const savingsTrend = document.getElementById("savings-trend");
+
+        // জমার ডেটা সংগ্রহ করা
+        const monthlySavings = {};
+
+        transactions
+          .filter((t) => t.type === "savings")
+          .forEach((transaction) => {
+            const key = `${transaction.month}-${transaction.year}`;
+            if (!monthlySavings[key]) {
+              monthlySavings[key] = 0;
+            }
+            monthlySavings[key] += transaction.amount;
+          });
+
+        if (Object.keys(monthlySavings).length === 0) {
+          savingsTrend.innerHTML = `
+                    <div class="empty-data">
+                        <i class="fas fa-chart-line" style="font-size: 48px; margin-bottom: 15px;"></i>
+                        <p>জমার প্রবণতা দেখানোর জন্য পর্যাপ্ত ডেটা নেই</p>
+                    </div>
+                `;
+          return;
+        }
+
+        // চার্ট তৈরি করা
+        let chartHTML = `
+                <div class="chart-content">
+                    <h3 style="text-align: center; margin-bottom: 20px; color: #2c3e50;">মাসিক জমার পরিমাণ</h3>
+            `;
+
+        const monthNames = [
+          "জানু",
+          "ফেব্রু",
+          "মার্চ",
+          "এপ্রিল",
+          "মে",
+          "জুন",
+          "জুলাই",
+          "আগস্ট",
+          "সেপ্ট",
+          "অক্টো",
+          "নভে",
+          "ডিসে",
+        ];
+        const sortedMonths = Object.keys(monthlySavings).sort();
+
+        sortedMonths.forEach((key) => {
+          const [month, year] = key.split("-");
+          const savings = monthlySavings[key];
+
+          chartHTML += `
+                    <div style="margin: 15px 0; width: 80%;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>${monthNames[parseInt(month)]} ${year}:</span>
+                            <span>৳ ${savings.toLocaleString()}</span>
+                        </div>
+                        <div class="ratio-bar">
+                            <div class="ratio-fill" style="width: ${
+                              (savings /
+                                Math.max(...Object.values(monthlySavings))) *
+                              100
+                            }%; background: #3498db;"></div>
+                        </div>
+                    </div>
+                `;
+        });
+
+        chartHTML += `</div>`;
+
+        savingsTrend.innerHTML = chartHTML;
+      }
+
+      // নোটিফিকেশন দেখানো
+      function showNotification(message, isError = false) {
+        const notification = document.getElementById("notification");
+        notification.textContent = message;
+        notification.className = isError
+          ? "notification error"
+          : "notification";
+        notification.classList.add("show");
+
+        setTimeout(() => {
+          notification.classList.remove("show");
+        }, 3000);
+      }
+
+      // CSV ডাউনলোড ফাংশন
+      function downloadCSV() {
+        if (transactions.length === 0) {
+          showNotification("ডাউনলোড করার জন্য কোনো ডেটা নেই।", true);
+          return;
+        }
+
+        // CSV হেডার তৈরি করুন
+        let csv = "আইডি,ধরন,শিরোনাম,পরিমাণ,ক্যাটাগরি,তারিখ,মাস,বছর\n";
+
+        // প্রতিটি লেনদেন CSV লাইনে যোগ করুন
+        transactions.forEach((transaction) => {
+          csv += `${transaction.id},${transaction.type},${transaction.title},${transaction.amount},${transaction.category},${transaction.date},${transaction.month},${transaction.year}\n`;
+        });
+
+        // CSV ফাইল ডাউনলোড করুন
+        const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+        const link = document.createElement("a");
+        const url = URL.createObjectURL(blob);
+
+        link.setAttribute("href", url);
+        link.setAttribute(
+          "download",
+          `অর্থ_ব্যবস্থাপনা_ডেটা_${new Date().toLocaleDateString("bn-BD")}.csv`
+        );
+        link.style.visibility = "hidden";
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        showNotification("CSV ফাইল ডাউনলোড করা হয়েছে!");
+      }
+
+      // JSON ডাউনলোড ফাংশন
+      function downloadJSON() {
+        if (transactions.length === 0) {
+          showNotification("ডাউনলোড করার জন্য কোনো ডেটা নেই।", true);
+          return;
+        }
+
+        // ডেটা অবজেক্ট তৈরি করুন
+        const data = {
+          transactions: transactions,
+          savingsGoal: savingsGoal,
+          exportDate: new Date().toISOString(),
+        };
+
+        // JSON স্ট্রিং তৈরি করুন
+        const json = JSON.stringify(data, null, 2);
+
+        // JSON ফাইল ডাউনলোড করুন
+        const blob = new Blob([json], {
+          type: "application/json;charset=utf-8;",
+        });
+        const link = document.createElement("a");
+        const url = URL.createObjectURL(blob);
+
+        link.setAttribute("href", url);
+        link.setAttribute(
+          "download",
+          `অর্থ_ব্যবস্থাপনা_ডেটা_${new Date().toLocaleDateString("bn-BD")}.json`
+        );
+        link.style.visibility = "hidden";
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        showNotification("JSON ফাইল ডাউনলোড করা হয়েছে!");
+      }
+    </script>
+  </body>
 </html>
