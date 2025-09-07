@@ -8,43 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- লগইন পেজ -->
-    <div id="login-page" class="login-container">
-        <div class="login-card">
-            <h1><i class="fas fa-wallet"></i> অর্থ ব্যবস্থাপনা</h1>
-            <p>আপনার মাসিক আয়, ব্যয় এবং জমার হিসাব রাখুন। গুগল লগইন ব্যবহার করে আপনার ডেটা সুরক্ষিত রাখুন।</p>
-            
-            <div class="feature-list">
-                <li><i class="fas fa-check-circle"></i> গুগল ড্রাইভে ডেটা স্বয়ংক্রিয় সংরক্ষণ</li>
-                <li><i class="fas fa-check-circle"></i> যেকোনো ডিভাইস থেকে অ্যাক্সেস</li>
-                <li><i class="fas fa-check-circle"></i> মাসিক আয়-ব্যয়ের বিশ্লেষণ</li>
-                <li><i class="fas fa-check-circle"></i> জমার লক্ষ্য ট্র্যাকিং</li>
-            </div>
-            
-            <button id="google-login" class="google-btn">
-                <i class="fab fa-google"></i> গুগল দিয়ে লগইন করুন
-            </button>
-            
-            <div class="login-options">
-                <button id="demo-login" class="demo-btn">
-                    <i class="fas fa-play-circle"></i> ডেমো হিসেবে试用 করুন
-                </button>
-            </div>
-            
-            <div id="login-spinner" class="spinner hidden"></div>
-            
-            <div id="login-feedback" class="login-feedback hidden">
-                লগইন প্রক্রিয়া正在进行中...
-            </div>
-            
-            <div class="login-footer">
-                <p>গুগল লগইন ব্যবহার করলে আপনার ডেটা গুগল ড্রাইভে সংরক্ষিত হবে এবং যেকোনো ডিভাইস থেকে এক্সেস করতে পারবেন।</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- মেইন অ্যাপ্লিকেশন (লগইন成功后 দেখানো হবে) -->
-    <div id="app" class="container hidden">
+    <div class="container">
         <!-- নেভিগেশন বার -->
         <nav class="navbar">
             <div class="nav-container">
@@ -55,17 +19,8 @@
                     <li class="nav-item"><a href="#" class="nav-link active" data-tab="dashboard"><i class="fas fa-home icon"></i> ড্যাশবোর্ড</a></li>
                     <li class="nav-item"><a href="#" class="nav-link" data-tab="monthly-report"><i class="fas fa-chart-pie icon"></i> মাসিক রিপোর্ট</a></li>
                     <li class="nav-item"><a href="#" class="nav-link" data-tab="savings"><i class="fas fa-piggy-bank icon"></i> জমার হিসাব</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link" data-tab="backup"><i class="fas fa-database icon"></i> ডেটা ম্যানেজমেন্ট</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link" data-tab="backup"><i class="fas fa-database icon"></i> ডেটা ব্যাকআপ</a></li>
                 </ul>
-                
-                <div class="user-info">
-                    <img id="user-avatar" class="user-avatar" src="" alt="User Avatar">
-                    <span id="user-name"></span>
-                    <div class="cloud-sync">
-                        <i class="fas fa-cloud"></i> <span id="sync-status">সিঙ্ক করা হয়েছে</span>
-                    </div>
-                    <button id="logout-btn" class="delete-btn" style="margin-left: 15px;"><i class="fas fa-sign-out-alt"></i></button>
-                </div>
             </div>
         </nav>
         
@@ -78,8 +33,7 @@
             </div>
             <div class="sync-status">
                 <i class="fas fa-info-circle"></i>
-                <span>ডেটা গুগল ড্রাইভে সংরক্ষিত হচ্ছে। যেকোনো ডিভাইস থেকে এক্সেস করতে পারবেন。</span>
-                <button id="manual-sync" class="secondary-btn" style="margin-left: 15px;"><i class="fas fa-sync"></i> সিঙ্ক করুন</button>
+                <span>ডেটা শুধুমাত্র এই ব্রাউজারে সংরক্ষিত হচ্ছে। নিয়মিত ব্যাকআপ নিন।</span>
             </div>
         </div>
         
@@ -178,6 +132,16 @@
                     </div>
                 </div>
             </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-history icon"></i> গত মাসের তুলনা</h2>
+                <div id="month-comparison">
+                    <div class="empty-data">
+                        <i class="fas fa-chart-bar" style="font-size: 48px; margin-bottom: 15px;"></i>
+                        <p>তুলনা করার জন্য পর্যাপ্ত ডেটা নেই</p>
+                    </div>
+                </div>
+            </div>
         </div>
         
         <!-- জমার হিসাব ট্যাব -->
@@ -198,34 +162,115 @@
                     </div>
                     <button id="set-goal"><i class="fas fa-target icon"></i> লক্ষ্য নির্ধারণ করুন</button>
                 </div>
+                
+                <div class="table-container" style="margin-top: 20px;">
+                    <table id="savings-table">
+                        <thead>
+                            <tr>
+                                <th>মাস</th>
+                                <th>জমার পরিমাণ</th>
+                                <th>লক্ষ্যমাত্রা</th>
+                                <th>অবস্থা</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- জমার ডেটা JavaScript দ্বারা যোগ করা হবে -->
+                        </tbody>
+                    </table>
+                    <div id="no-savings" class="empty-data">
+                        <i class="fas fa-piggy-bank" style="font-size: 48px; margin-bottom: 15px;"></i>
+                        <p>কোনো জমার তথ্য পাওয়া যায়নি</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-chart-line icon"></i> জমার প্রবণতা</h2>
+                <div id="savings-trend">
+                    <div class="empty-data">
+                        <i class="fas fa-chart-line" style="font-size: 48px; margin-bottom: 15px;"></i>
+                        <p>জমার প্রবণতা দেখানোর জন্য পর্যাপ্ত ডেটা নেই</p>
+                    </div>
+                </div>
             </div>
         </div>
         
-        <!-- ডেটা ম্যানেজমেন্ট ট্যাব -->
+        <!-- ডেটা ব্যাকআপ ট্যাব -->
         <div id="backup" class="tab-content">
             <div class="card">
-                <h2><i class="fas fa-database icon"></i> ডেটা ম্যানেজমেন্ট</h2>
-                <p>আপনার সমস্ত ডেটা গুগল ড্রাইভে স্বয়ংক্রিয়ভাবে সংরক্ষিত হচ্ছে।</p>
+                <h2><i class="fas fa-database icon"></i> ডেটা ব্যাকআপ ও রিস্টোর</h2>
+                <p>আপনার সমস্ত ডেটা নিয়মিত ব্যাকআপ করুন যাতে যেকোনো ডিভাইস বা 브্রাউজার থেকে এক্সেস করতে পারেন।</p>
                 
                 <div class="export-section">
-                    <h3><i class="fas fa-cloud-upload-alt icon"></i> গুগল ড্রাইভ স্ট্যাটাস</h3>
-                    <p>সর্বশেষ সিঙ্ক: <span id="last-sync-time">অজানা</span></p>
-                    <p>ডেটা ফাইল: <span id="drive-file-name">অজানা</span></p>
+                    <h3><i class="fas fa-download icon"></i> ডেটা ব্যাকআপ</h3>
+                    <p>আপনার সমস্ত লেনদেন এবং সেটিংস একটি JSON ফাইলে ডাউনলোড করুন। এই ফাইলটি সংরক্ষণ করুন এবং প্রয়োজন時に রিস্টোর করতে ব্যবহার করুন।</p>
                     
                     <div class="btn-group">
-                        <button id="force-sync" class="secondary-btn"><i class="fas fa-sync"></i> জোরপূর্বক সিঙ্ক</button>
-                        <button id="create-backup" class="secondary-btn"><i class="fas fa-plus"></i> নতুন ব্যাকআপ তৈরি করুন</button>
+                        <button id="backup-data" class="secondary-btn"><i class="fas fa-save icon"></i> সম্পূর্ণ ডেটা ব্যাকআপ</button>
                     </div>
                 </div>
                 
                 <div class="export-section">
-                    <h3><i class="fas fa-download icon"></i> ডেটা ডাউনলোড</h3>
-                    <p>আপনার ডেটা CSV ফরম্যাটে ডাউনলোড করুন:</p>
+                    <h3><i class="fas fa-upload icon"></i> ডেটা রিস্টোর</h3>
+                    <p>পূর্বে সংরক্ষিত ব্যাকআপ ফাইল থেকে আপনার ডেটা রিস্টোর করুন।</p>
+                    
+                    <div class="btn-group">
+                        <button id="restore-data" class="secondary-btn"><i class="fas fa-upload icon"></i> ডেটা রিস্টোর করুন</button>
+                        <input type="file" id="restore-file" accept=".json" style="display: none;">
+                    </div>
+                </div>
+                
+                <div class="export-section">
+                    <h3><i class="fas fa-file-csv icon"></i> CSV রিপোর্ট</h3>
+                    <p>এক্সেল বা Google Sheets-এ ব্যবহারের জন্য আপনার ডেটা CSV ফরম্যাটে ডাউনলোড করুন।</p>
                     
                     <div class="btn-group">
                         <button id="export-transactions" class="secondary-btn"><i class="fas fa-download icon"></i> সমস্ত লেনদেন ডাউনলোড</button>
                         <button id="export-monthly" class="secondary-btn"><i class="fas fa-download icon"></i> মাসিক রিপোর্ট ডাউনলোড</button>
                     </div>
+                </div>
+                
+                <div class="export-section">
+                    <h3><i class="fas fa-sync-alt icon"></i> অটো-ব্যাকআপ সেটিংস</h3>
+                    <p>আপনার ডেটা স্বয়ংক্রিয়ভাবে ব্যাকআপ করার জন্য সেটিংস কনফিগার করুন।</p>
+                    
+                    <div class="form-group">
+                        <label for="auto-backup">
+                            <input type="checkbox" id="auto-backup"> স্বয়ংক্রিয় ব্যাকআপ সক্রিয় করুন
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="backup-frequency">ব্যাকআপ ফ্রিকোয়েন্সি</label>
+                        <select id="backup-frequency">
+                            <option value="7">সাপ্তাহিক</option>
+                            <option value="14">প্রতি দুই সপ্তাহে</option>
+                            <option value="30">মাসিক</option>
+                        </select>
+                    </div>
+                    
+                    <button id="save-backup-settings" class="secondary-btn"><i class="fas fa-cog icon"></i> সেটিংস সংরক্ষণ করুন</button>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-history icon"></i> ব্যাকআপ ইতিহাস</h2>
+                <div class="table-container">
+                    <table id="backup-history-table">
+                        <thead>
+                            <tr>
+                                <th>তারিখ</th>
+                                <th>বিবরণ</th>
+                                <th>ফাইলের আকার</th>
+                                <th>কার্যক্রম</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="4" style="text-align: center;">কোনো ব্যাকآপ ইতিহাস নেই</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -233,8 +278,6 @@
 
     <div id="notification" class="notification"></div>
 
-    <!-- গুগল API স্ক্রিপ্ট -->
-    <script src="https://apis.google.com/js/api.js"></script>
     <!-- মূল JavaScript ফাইল -->
     <script src="app.js"></script>
 </body>
