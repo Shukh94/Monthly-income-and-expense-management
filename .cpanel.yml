@@ -1,0 +1,8 @@
+---
+deployment:
+  tasks:
+    # Step 1: Deploy path define করো
+    - export DEPLOYPATH=/home/shakilas/money-management-app-.shakilashukla.com
+
+    # Step 2: Git থেকে সব ফাইল ওই ফোল্ডারে কপি করো
+    - /bin/rsync -av * $DEPLOYPATH --exclude '.git' --exclude '.cpanel.yml'
